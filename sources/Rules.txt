@@ -1,1 +1,25 @@
-Hallo ich bin dein File!
+
+
+/////////////////////////////////////////////////////////////////
+Welcome!
+In each round you can select from 3 options. You can play a
+game, end it, or print the rules.
+
+Different players can throw a mug full of dices. The points
+where calculated as the follows:
+
+1. : A pair.
+If minimum 2 dices within the mug have the same number, its
+a pair. The grates pair is multiplied with 10.
+
+2. : A pasch.
+If any dices in the mug have the same number, its a pasch.
+The eye of the dices are multiplied with 100.
+
+3. : A street.
+If minimum 3 dices in the mug build a series, its a street.
+Streets gets you 100 points.
+
+4. : If you dont have a pair, nor a pasch, nor a street,
+your eyes where summarized to calculate the points.
+/////////////////////////////////////////////////////////////////

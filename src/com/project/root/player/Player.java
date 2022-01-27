@@ -1,65 +1,74 @@
 package com.project.root.player;
 
-import com.project.root.gameutilities.winvalidation.Profit_Types;
+import com.project.root.gameutilities.winvalidation.WinValidation;
 
 import java.util.ArrayList;
 
 /**
+ * Represents a playing entity in this game. Can have losses, wins and points that increase while playing. Has a name
+ * for identification.
+ *
  * @author Christopher Hübner
  * @version 1.0 22.01.2021
  */
 public class Player {
     /**
-     *
+     * The name of the playing entity.
      */
     private final String name;
     /**
-     *
+     * THe points.
      */
-    private int points;
+    private int points = 0;
     /**
-     *
+     * An sorted list of the wins.
      */
-    private ArrayList<Profit_Types> profits;
+    private ArrayList<WinValidation.Profit_Types> profits = new ArrayList<>();
 
     /**
-     * @param name
+     * The constructor.
+     * Points are set by default to 0.
+     * @param name The name for this entity.
      */
     public Player(String name) {
         this.name = name;
-        profits = new ArrayList<>();
     }
 
     /**
-     * @return
+     * Returns the current points.
+     * @return The points of this player.
      */
     public int getPoints() {
         return points;
     }
 
     /**
-     * @param points
+     * Adds points to the player.
+     * @param points The points to be added.
      */
     public void addPoints(int points) {
         this.points += points;
     }
 
     /**
-     * @return
+     * Returns a sorted list of the win types of this player.
+     * @return Returns the sorted list of wins.
      */
-    public ArrayList<Profit_Types> getProfits() {
+    public ArrayList<WinValidation.Profit_Types> getProfits() {
         return profits;
     }
 
     /**
-     * @param profit
+     * Adds a Profit_Type to the entity.
+     * @param profit The profit type to be added.
      */
-    public void addProfits(Profit_Types profit) {
+    public void addProfits(WinValidation.Profit_Types profit) {
         this.profits.add(profit);
     }
 
     /**
-     * @return
+     * Returns the name.
+     * @return The name of this entity.
      */
     public String getName() {
         return name;

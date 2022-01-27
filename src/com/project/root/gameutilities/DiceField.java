@@ -1,9 +1,6 @@
 package com.project.root.gameutilities;
 
-import com.project.root.gameutilities.winvalidation.WinValidation;
-
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -27,7 +24,7 @@ import java.util.stream.Stream;
 public class DiceField {
 
     /**
-     * Is private because the clas shas just a single static method.
+     * Its private because {@link DiceField} is a utility class.
      */
     private DiceField() {
     }
@@ -64,6 +61,13 @@ public class DiceField {
         return charMatrix;
     }
 
+    /**
+     * Frames the three times three matrix from {@link #getCharMatrix(MatrixPosition...)} within a five time five
+     * matrix, adding a border to it.
+     *
+     * @param matrix The matrix to frame with a border.
+     * @return The framed matrix.
+     */
     public static char[][] frameCharMatrix (char[][] matrix) {
         int height = matrix.length + 2;
         int width = matrix[0].length + 2;
@@ -83,7 +87,7 @@ public class DiceField {
     }
 
     /**
-     * Encapsulates the x and y coordinates for a position within the DiceFields Matrix.
+     * Encapsulates the x and y coordinates for a position within the three times three DiceFields Matrix.
      * Is a wrapper class for final int values.
      * Because the index of a array begins at 0, the maximum for x and y is 2.
      *
@@ -135,39 +139,44 @@ public class DiceField {
     }
 
     /**
+     * The Configuration for the print level of a three times three dice field.
+     * Has different default configurations for the print level values of a dice with range from 1 to 6. The
+     * configuration is saved within arrays or single {@link MatrixPosition}.
+     *
+     * For example {@link #CONF_ONE} defines how to display a "one" on a three times three dice field.
+     *
      * @author Christopher Hübner
      * @version 1.0.0 19.01.2021
      */
     public static class DiceFieldConfiguration {
 
         /**
-         * Becaus this class has only static fields and methods, the constructor is private.
+         * Because this class has only static fields and methods, the constructor is private.
          */
         private DiceFieldConfiguration() {
-
         }
 
         /**
-         *
+         * The matrix position within a three times three matrix to symbolize a one.
          */
         public static final MatrixPosition CONF_ONE = new MatrixPosition(1, 1);
 
         /**
-         *
+         * The matrix position within a three times three matrix to symbolize a two.
          */
         public static final MatrixPosition[] CONF_TWO = {
                 new MatrixPosition(1, 0), new MatrixPosition(1, 2)
         };
 
         /**
-         *
+         * The matrix position within a three times three matrix to symbolize a three.
          */
         public static final MatrixPosition[] CONF_THREE = {
                 new MatrixPosition(1, 0), new MatrixPosition(1, 1), new MatrixPosition(1, 2)
         };
 
         /**
-         *
+         * The matrix position within a three times three matrix to symbolize a four.
          */
         public static final MatrixPosition[] CONF_FOUR = {
                 new MatrixPosition(0, 0), new MatrixPosition(2, 0), new MatrixPosition(0, 2),
@@ -175,7 +184,7 @@ public class DiceField {
         };
 
         /**
-         *
+         * The matrix position within a three times three matrix to symbolize a five.
          */
         public static final MatrixPosition[] CONF_FIVE = {
                 new MatrixPosition(0, 0), new MatrixPosition(2, 0), new MatrixPosition(1, 1),
@@ -183,7 +192,7 @@ public class DiceField {
         };
 
         /**
-         *
+         * The matrix position within a three times three matrix to symbolize a six.
          */
         public static final MatrixPosition[] CONF_SIX = {
                 new MatrixPosition(0, 0), new MatrixPosition(2, 0), new MatrixPosition(0, 1),

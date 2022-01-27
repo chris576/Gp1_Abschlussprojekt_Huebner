@@ -1,5 +1,8 @@
 package com.project.root.gameutilities;
 
+import com.project.root.gameutilities.winvalidation.DicesFallOfException;
+import com.project.root.gameutilities.winvalidation.ThrowValidation;
+
 import java.util.Arrays;
 
 /**
@@ -21,22 +24,23 @@ public class Mug {
      * @param dice_amount The amount of dices.
      */
     public Mug(int dice_amount) {
-        this.dices = new Dice[dice_amount];
-        putDicesToMug(dice_amount);
+        initDiceArray(dice_amount);
     }
 
     /**
      * Inits with a dice number of 1.
      */
     public Mug() {
-        this.dices = new Dice[1];
-        putDicesToMug(1);
+        initDiceArray(1);
     }
 
     /**
-     * @param number
+     * Initializes {@link #dices} with the parameter given amount.
+     *
+     * @param number The dice amount.
      */
-    private void putDicesToMug(int number) {
+    private void initDiceArray(int number) {
+        dices = new Dice[number];
         for (int i = 0; i < number; i++) {
             dices[i] = new Dice();
         }
@@ -49,11 +53,16 @@ public class Mug {
      * @param amount The new dice amount.
      */
     public void setDiceQuantity(int amount) {
-        this.dices = new Dice[amount];
-        putDicesToMug(amount);
+        initDiceArray(amount);
     }
 
-    public int getEye (int iw) {
+    /**
+     * Returns the eye on the given index.
+     *
+     * @param iw The index.
+     * @return The eye on the given index.
+     */
+    public int getEye(int iw) {
         assert iw >= dices.length;
         return dices[iw].getEye();
     }
@@ -68,14 +77,18 @@ public class Mug {
     }
 
     /**
-     *
+     * Throws any dices in the mug. If the exception is thrown, the dices dont change.
+     * @throws DicesFallOfException Throws at a risk of 10 percent.
      */
-    public void throwAny() throws InvalidThrowException {
+    public void throwAny() throws DicesFallOfException {
         ThrowValidation.validate(dices.length);
         Arrays.stream(dices).forEach(Dice::toThrow);
     }
 
-    public void cliOutAll () {
+    /**
+     * Prints all dices in the mug.
+     */
+    public void cliOutAll() {
         Arrays.stream(dices).forEach(Dice::output);
     }
 }

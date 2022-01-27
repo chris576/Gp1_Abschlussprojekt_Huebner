@@ -1,8 +1,7 @@
 package com.project.root;
 
-import com.project.root.gameutilities.InvalidThrowException;
+import com.project.root.gameutilities.winvalidation.DicesFallOfException;
 import com.project.root.gameutilities.Mug;
-import com.project.root.gameutilities.winvalidation.Profit_Types;
 import com.project.root.gameutilities.winvalidation.WinValidation;
 import com.project.root.player.Player;
 import com.project.root.sources.Strings;
@@ -12,28 +11,43 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.InputMismatchException;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
- * This is the main class of the project. It has the main and therefore the entry point of the programm.
+ * This is the main class of the project. It has the main and therefore the entry point of the program.
  * It defines the rules for starting, ending and playing the game. It also outputs
  *
- * @version 1.0 23.01.2021
  * @author Christopher Hübner
+ * @version 1.0 23.01.2021
  */
 public class Game {
 
+    /**
+     * An array to store any player who takes part of the competition. Is initialized in {@link #begin()}, because
+     * the amount of players is unknown at init time of the game object.
+     */
     private Player[] players;
+
+    /**
+     * The mug the players do play with.
+     */
     private Mug mug = new Mug();
 
+    /**
+     * The standard constructor of the Game Class.
+     */
     public Game() {
     }
 
+    /**
+     * The main method (entry point) of this project.
+     *
+     * @param args Optional arguments given to the program.
+     */
     public static void main(String[] args) {
         Game game = new Game();
         game.begin();
-        boolean notEnd = true;
+        boolean notEnd;
         do {
             notEnd = game.play();
         } while (notEnd);
@@ -41,24 +55,28 @@ public class Game {
     }
 
     /**
-     * @return
-     * @throws InputMismatchException
-     * @throws NoSuchElementException
+     * Requests the user to input a integer.
+     *
+     * @return Returns the next integer given to the cli.
+     * @throws InputMismatchException Throws a Exception, if a non integer value is passed to the cli.
      */
     private int cli_int_in() throws InputMismatchException {
         Scanner scanner = new Scanner(System.in);
-        int rtn = scanner.nextInt();
-        return rtn;
-    }
-
-    private String cli_str_in() {
-        Scanner scanner = new Scanner(System.in);
-        String rtn = scanner.nextLine();
-        return rtn;
+        return scanner.nextInt();
     }
 
     /**
+     * Requests the user to input a string.
      *
+     * @return The new line on the cli is returned as string.
+     */
+    private String cli_str_in() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine();
+    }
+
+    /**
+     * Starts the game. Requests the user to select how much player want to play and how much dices shall be used.
      */
     private void begin() {
         System.out.println(Strings.OUT_GREETING);
@@ -103,7 +121,14 @@ public class Game {
     }
 
     /**
-     * Plays a single round.
+     * Defines the rules for playing a single round.
+     * Step 1: Print the options.
+     * Step 2: The user selects a option.
+     * Step 3: Any player throws the mug. The points and wins are added to the players.
+     * Step 4: The dices and the wins are printed to the cli.
+     *
+     * @return returns if a new round shall be played due to the user input from the cli. If true, a new round shall
+     * be played.
      */
     private boolean play() {
         System.out.println(Strings.OUT_OPTIONS);
@@ -147,7 +172,7 @@ public class Game {
                     case NONE:
                         win_str = "regular throw without special wins.";
                         break;
-                    case Pair:
+                    case PAIR:
                         win_str = "pair.";
                         break;
                     case PASCH:
@@ -158,9 +183,9 @@ public class Game {
                         break;
                 }
                 System.out.println(Strings.GET_THROWCONCLUSION(player.getName(), win.getPoint(), win_str));
-            } catch (InvalidThrowException ex) {
+            } catch (DicesFallOfException ex) {
                 System.out.println(ex.getMessage());
-                player.addProfits(Profit_Types.ILLEGAL);
+                player.addProfits(WinValidation.Profit_Types.ILLEGAL);
                 System.out.println(Strings.GET_THROWCONCLUSION(player.getName(), 0, "illegal throw"));
             }
         }
@@ -168,17 +193,18 @@ public class Game {
     }
 
     /**
-     * Finishes the game by exiting the program.
+     * Finishes the game by output a conclusion of the played rounds.
      */
     private void finish() {
         System.out.println(Strings.OUT_FINALMESSAGE);
-        Arrays.stream(players).forEach(el -> {
-            System.out.println(Strings.GET_PLAYERCONCLUSION(el.getName(), el.getPoints()));
-        });
+        Arrays.stream(players).forEach(
+                el -> System.out.println(Strings.GET_PLAYERCONCLUSION(el.getName(), el.getPoints())));
     }
 
     /**
      * Displays the rules.
+     *
+     * @throws IOException throws a Exception, if the rules where not found.
      */
     private void displayRules() throws IOException {
         BufferedReader in = new BufferedReader(new FileReader("sources/Rules.txt"));
